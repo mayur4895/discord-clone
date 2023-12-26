@@ -30,7 +30,7 @@ const NavigationSidebar = async () => {
 
 
     return (<>
-        <div className="flex flex-col h-full  dark:bg-[#1e1e1e]   items-center py-4">
+        <div className="flex flex-col h-full  dark:bg-[#1e1e1e] bg-[#f1f1f1]  items-center py-4">
             <NavigationAction />
       <Separator className='h-[2px] my-2'/>
             <ScrollArea className='flex-1 w-full'>
@@ -45,11 +45,20 @@ const NavigationSidebar = async () => {
                })} 
             </ScrollArea>
 
-               
-            <ModeToggle />
+          <div className='pb-3 mt-auto flex flex-col items-center gap-4'>
+                  
+          <ModeToggle 
+          
+          />
                 <UserButton
                     afterSignOutUrl='/'
+                    appearance={{
+                        elements:{
+                            avatarBox:"h-[42px] w-[42px]"
+                        }
+                    }}
                 />
+          </div>
         </div>
 
 

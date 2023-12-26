@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { cn } from '@/lib/utils'
+import ModalProvider from '@/components/providers/modal-provider'
  
 const  font = Poppins({ weight:['200','300','400','500','600','700','800','900']  ,subsets: ['latin'] })
 
@@ -30,8 +31,11 @@ export default function RootLayout({
           enableSystem={false}
           storageKey="discord-theme"
         > 
+            <ModalProvider/>
         {children}
+     
          </ThemeProvider>
+   
         </body>
     </html>
     </ClerkProvider>
