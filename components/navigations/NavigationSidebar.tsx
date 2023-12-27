@@ -30,7 +30,7 @@ const NavigationSidebar = async () => {
 
 
     return (<>
-        <div className="flex flex-col h-full justify-center  dark:bg-[#0e0d0d] bg-[#f1f1f1]  border-r  items-center py-4">
+        <div className="flex flex-col h-full justify-center  dark:bg-[#0e0d0d] bg-[#ebecee] border-r  items-center py-4">
             <NavigationAction />
       <Separator className='h-[2px] my-2  w-10'/>
             <ScrollArea className='flex-1 w-full'>
@@ -48,7 +48,7 @@ const NavigationSidebar = async () => {
           <div className='pb-3 mt-auto flex flex-col items-center gap-4'>
                   
           <ModeToggle 
-          
+              
           />
                 <UserButton
                     afterSignOutUrl='/'
