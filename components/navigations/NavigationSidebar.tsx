@@ -30,9 +30,9 @@ const NavigationSidebar = async () => {
 
 
     return (<>
-        <div className="flex flex-col h-full  dark:bg-[#1e1e1e] bg-[#f1f1f1]  items-center py-4">
+        <div className="flex flex-col h-full justify-center  dark:bg-[#0e0d0d] bg-[#f1f1f1]  border-r  items-center py-4">
             <NavigationAction />
-      <Separator className='h-[2px] my-2'/>
+      <Separator className='h-[2px] my-2  w-10'/>
             <ScrollArea className='flex-1 w-full'>
                {servers.map((server)=>{
                 return(<div key={server.id} className='mb-4'>
@@ -54,7 +54,7 @@ const NavigationSidebar = async () => {
                     afterSignOutUrl='/'
                     appearance={{
                         elements:{
-                            avatarBox:"h-[42px] w-[42px]"
+                            avatarBox:"h-[40px] w-[40px]"
                         }
                     }}
                 />

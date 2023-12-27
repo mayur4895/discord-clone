@@ -32,7 +32,7 @@ const handleClick = ()=>{
     >
       <button
         onClick={handleClick}
-        className="group relative flex items-center"
+        className="group relative flex items-center  justify-center"
       >
         <div className={cn(
           "absolute left-0 bg-primary rounded-r-full transition-all w-[4px]",
@@ -40,8 +40,8 @@ const handleClick = ()=>{
           params?.serverId === id ? "h-[36px]" : "h-[8px]"
         )} />
         <div className={cn(
-          "relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[18px] transition-all overflow-hidden",
-          params?.serverId === id && "bg-primary/10 text-primary rounded-[18px]"
+          "relative group flex mx-4 h-[41px] w-[41px] rounded-[24px] group-hover:rounded-[24px] transition-all overflow-hidden",
+          params?.serverId === id && "bg-primary/10 text-primary rounded-[24px]"
         )}>
           <Image
             fill

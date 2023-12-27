@@ -24,12 +24,11 @@ model Profile {
 
 model Server {
   id String  @id @default(auto()) @map("_id") @db.ObjectId 
-  name String
-  imageUrl String
+name String
+  imageUrl String @db.ObjectId
   inviteCode String @unique
-   
-  profileId String @db.ObjectId
 
+  profileId String @db.ObjectId
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   members Member[]
@@ -40,7 +39,6 @@ model Server {
 
   @@index([profileId])
 }
-
 enum MemberRole {
   ADMIN
   MODERATOR

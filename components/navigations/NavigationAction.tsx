@@ -12,8 +12,8 @@ const NavigationAction = ()=>{
     side="left"
 
     >
-    <button onClick={()=>{onOpen("createServer")}} className=" drop-shadow-md  group">
-  <div className=" flex  rounded-[18px] mb-2 h-[48px] w-[48px] p-2 group-hover:rounded-2xl justify-center transition  bg-neutral-700 dark:bg-neutral-700 text-white items-center overflow-hidden hover:bg-emerald-600">
+    <button onClick={()=>{onOpen("createServer")}} className=" drop-shadow-md flex group">
+  <div className=" flex      h-[42px] w-[42px]     justify-center transition   dark:text-white    text-black items-center overflow-hidden hover:text-emerald-600">
     
  <Plus size={20}/>
   </div>
