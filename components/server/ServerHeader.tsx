@@ -57,7 +57,9 @@ const ServerHeader:React.FC<ServerHeaderProps> = ({
          </DropdownMenuItem>
      )}
         {isAdmin && (
-         <DropdownMenuItem className="flex justify-between  text-zinc-900  dark:text-zinc-200  hover:text-zinc-200">
+         <DropdownMenuItem
+         onClick={()=>onOpen("members",{server})}
+          className="flex justify-between  text-zinc-900  dark:text-zinc-200  hover:text-zinc-200">
             Manage Members
             <Users size={18}/>
          </DropdownMenuItem>
@@ -71,7 +73,9 @@ const ServerHeader:React.FC<ServerHeaderProps> = ({
      )}
 
 {isAdmin && (
-         <DropdownMenuItem className="flex justify-between  text-zinc-900 dark:text-zinc-200  hover:text-zinc-200">
+         <DropdownMenuItem 
+         onClick={()=>onOpen("editServer",{server})}
+         className="flex justify-between  text-zinc-900 dark:text-zinc-200  hover:text-zinc-200">
              Server Setting
             <Settings size={18}/>
          </DropdownMenuItem>
