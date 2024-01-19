@@ -16,6 +16,8 @@ import { useModal } from '../../hooks/use-modal-store';
 import { Label } from "../ui/label";
 import { Check, Copy, RefreshCw } from "lucide-react";
 import { useState } from "react";
+import ActionToolTip from "../ActionToolTip";
+import axios from "axios";
  
 
 
@@ -23,10 +25,11 @@ import { useState } from "react";
  
 
 const InviteModal = ()=>{
-  const {isOpen,onClose,type,data} = useModal();
+  const {isOpen,onClose,type,data,onOpen} = useModal();
 
   const {server} = data;
 const [Iscopy,setIscopy] = useState(false);
+const [isLoading,setisLoading] = useState(false);
   const  InviteUrl = `${origin}/invite/${server?.inviteCode}`
 
   const isModalOpen = isOpen && type==="invite";
@@ -38,8 +41,21 @@ const [Iscopy,setIscopy] = useState(false);
     setIscopy(true);
     setInterval(()=>{  
       setIscopy(false); 
-    },5000)
+    },1000)
 
+  }
+
+
+  const onNew = async() =>{
+   try {
+    setisLoading(true);
+    const response =  await axios.patch(`/api/servers/${server?.id}/invite-code`);
+    onOpen("invite", { server: response.data });
+   } catch (error) {
+ return error;
+   } finally{
+setisLoading(false);
+   }
   }
  
     return(<>
@@ -53,13 +69,19 @@ const [Iscopy,setIscopy] = useState(false);
     </DialogHeader>
     <Label>Server Invite Linked</Label>
     <div className="flex flex-row items-center gap-2"> 
-    <Input  className="bg-zinc-900   border-0 focus-visible:ring-0    text-white focus-visible:ring-offset-0 overflow-clip " value={InviteUrl}/>
-   {Iscopy ? <Check size={18} className="text-green-500"/>  :   <Copy size={18} onClick={copy}    className=" cursor-pointer text-zinc-900 dark:text-white "/>}
+    <Input  disabled={isLoading} contentEditable={false}  className="bg-zinc-900   border-0 focus-visible:ring-0   text-white focus-visible:ring-offset-0 overflow-clip " value={InviteUrl}/>
+     
+    
+    <ActionToolTip label="Copy"> 
+          <div>       
+          {Iscopy ? <Check size={18} className="text-green-500"/>  :   <Copy size={18} onClick={copy}    className=" cursor-pointer text-zinc-900 dark:text-white "/>}
+       </div>
+      </ActionToolTip>
     </div>
     <div>  
     <Button
-            onClick={()=>{}}
-        
+       onClick={onNew}
+       disabled={isLoading} 
             variant="link"
             size="sm"
             className="text-xs text-zinc-500 mt-2"

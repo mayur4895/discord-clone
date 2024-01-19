@@ -1,4 +1,4 @@
-import {v4 as uuid} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
@@ -19,7 +19,7 @@ try {
             profileId:profile.id,
             name,
             imageUrl,
-            inviteCode:uuid(),
+            inviteCode:uuidv4(),
             channels:{
                 create:[
                     {
