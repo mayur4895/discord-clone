@@ -96,6 +96,30 @@ const {toast} = useToast();
   onClose();
  }
  
+ const onkick = async (memberId: string) => {
+  try {
+     setlodingId(memberId);
+    const url = qs.stringifyUrl({
+      url: `/api/members/${memberId}`,
+      query: {
+        serverId: server?.id,
+      }
+    });
+
+    const response = await axios.delete(url);
+
+    router.refresh();
+    onOpen("members", { server: response.data });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setlodingId("");
+  }
+}
+
+
+
+ 
     return(<>
     <Dialog open={isModalOpen} onOpenChange={handleClose} >
   <DialogContent className=" outline-none">
@@ -164,7 +188,7 @@ const {toast} = useToast();
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={()=>{onkick(member?.id)}}>
             <AiTwotonePushpin className="mr-2 h-4 w-4" />
             <span>Kick</span>
      
