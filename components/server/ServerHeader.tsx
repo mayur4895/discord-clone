@@ -1,7 +1,7 @@
 'use client'
 import { MemberRole } from "@prisma/client";
 import  {ServerWithMembersWithProfiles} from '../../types';
-
+import qs from "query-string";
 
 
 import {
@@ -15,6 +15,8 @@ import {
 import { Button } from "../ui/button";
 import { ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
+import axios from "axios";
+import { useRouter } from "next/navigation";
   
 
 
@@ -35,6 +37,29 @@ const ServerHeader:React.FC<ServerHeaderProps> = ({
 
  const  isAdmin =  role === MemberRole.ADMIN;
  const isModerator = isAdmin || MemberRole.MODERATOR
+const router = useRouter();
+
+
+ 
+ const  onDelete = async (serverId:string) => {
+    try {
+       
+      const url = qs.stringifyUrl({
+        url: `/api/servers/${serverId}/leave`,
+        
+      });
+    
+      const response = await axios.delete(url);
+  
+      router.refresh();
+   
+    } catch (error) {
+      console.log(error);
+    }  
+  }
+  
+  
+  
 
     return ( <>
     <DropdownMenu >
@@ -91,7 +116,7 @@ const ServerHeader:React.FC<ServerHeaderProps> = ({
      )}
     <DropdownMenuSeparator />
     {isAdmin && (
-         <DropdownMenuItem className="flex justify-between text-rose-500  hover:text-rose-500">
+         <DropdownMenuItem className="flex justify-between text-rose-500  hover:text-rose-500" onClick={()=>{onDelete(server?.id)}}>
             delete Server
             <Trash size={18}/>
          </DropdownMenuItem>
