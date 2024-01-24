@@ -51,8 +51,8 @@ const ServerHeader:React.FC<ServerHeaderProps> = ({
  const [IsContinue,setIsContinue]= useState(false);
     const { onOpen } = useModal();
 
- const  isAdmin =  role === MemberRole.ADMIN;
- const isModerator = isAdmin || MemberRole.MODERATOR
+    const isAdmin = role === MemberRole.ADMIN;
+    const isModerator = isAdmin || role === MemberRole.MODERATOR;
 const router = useRouter();
 
 
@@ -82,70 +82,76 @@ const router = useRouter();
   
 
     return ( <>
-    <DropdownMenu >
-  <DropdownMenuTrigger className=" focus:outline-none " asChild>
-    <DropdownMenuLabel className="w-56 bg-[#ffff]  transition text-zinc-800 dark:text-white cursor-pointer dark:bg-zinc-800  border-[1px] border-zinc-200  dark:border-zinc-700  m-2 p-[10px] rounded-sm px-3 flex flex-row justify-between">
+    <DropdownMenu>
+    <DropdownMenuTrigger className=" focus:outline-none " asChild>
+    <DropdownMenuLabel className="w-56 bg-[#ffff] space-y-[2px] transition text-zinc-800 dark:text-white cursor-pointer dark:bg-zinc-800  border-[1px] border-zinc-200  dark:border-zinc-700  m-2 p-[10px] rounded-sm px-3 flex flex-row justify-between">
         {server.name}
         <ChevronDown size={20}/>
         </DropdownMenuLabel>
             
   </DropdownMenuTrigger>
-  <DropdownMenuContent          className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
-  
-          {isModerator && (
-   <DropdownMenuItem
-   onClick={()=>onOpen("invite",{server})}
-   
-   className="flex justify-between  text-indigo-500 dark:text-indigo-400  hover:text-zinc-200">
-             Invite People
-            <UserPlus size={18}/>
-         </DropdownMenuItem>
-     )}
+      <DropdownMenuContent
+        className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]"
+      >
+        {isModerator && (
+          <DropdownMenuItem
+            onClick={() => onOpen("invite", { server })}
+            className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
+          >
+            Invite People
+            <UserPlus className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        )}
         {isAdmin && (
-         <DropdownMenuItem
-         onClick={()=>onOpen("members",{server})}
-          className="flex justify-between  text-zinc-900  dark:text-zinc-200  hover:text-zinc-200">
+          <DropdownMenuItem
+            onClick={() => onOpen("editServer", { server })}
+            className="px-3 py-2 text-sm cursor-pointer"
+          >
+            Server Settings
+            <Settings className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        )}
+        {isAdmin && (
+          <DropdownMenuItem
+            onClick={() => onOpen("members", { server })}
+            className="px-3 py-2 text-sm cursor-pointer"
+          >
             Manage Members
-            <Users size={18}/>
-         </DropdownMenuItem>
-     )}
-
-{isModerator && (
- <DropdownMenuItem 
- onClick={()=>onOpen("createChannel",{server})}
- className="flex justify-between  text-zinc-900 dark:text-zinc-200  hover:text-zinc-200">
+            <Users className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        )}
+        {isModerator && (
+          <DropdownMenuItem
+            onClick={() => onOpen("createChannel")}
+            className="px-3 py-2 text-sm cursor-pointer"
+          >
             Create Channel
-            <PlusCircle size={18}/>
-         </DropdownMenuItem>
-     )}
-
-{isAdmin && (
-         <DropdownMenuItem 
-         onClick={()=>onOpen("editServer",{server})}
-         className="flex justify-between  text-zinc-900 dark:text-zinc-200  hover:text-zinc-200">
-             Server Setting
-            <Settings size={18}/>
-         </DropdownMenuItem>
-     )}
-
-
- 
-          {!isAdmin && (
-         <DropdownMenuItem className="flex justify-between">
+            <PlusCircle className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        )}
+        {isModerator && (
+          <DropdownMenuSeparator />
+        )}
+        {isAdmin && (
+          <DropdownMenuItem
+          onClick={() => onOpen("deleteServer")}
+            className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
+          >
+            Delete Server
+            <Trash className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        )}
+        {!isAdmin && (
+          <DropdownMenuItem
+          onClick={() => onOpen("leaveServer", { server })}
+            className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
+          >
             Leave Server
-            <LogOut size={18}/>
-         </DropdownMenuItem>
-     )}
-    <DropdownMenuSeparator />
-    {isAdmin && (
-         <DropdownMenuItem className="flex justify-between text-rose-500  hover:text-rose-500" onClick={()=>{onDelete(server?.id) , setIsOpen(true)}}>
-            delete Server
-            <Trash size={18}/>
-         </DropdownMenuItem>
-     )}
-     
-  </DropdownMenuContent>
-</DropdownMenu>
+            <LogOut className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
 
    <AlertDialog open={IsOpen} onOpenChange={setIsOpen}>
   <AlertDialogTrigger></AlertDialogTrigger>
