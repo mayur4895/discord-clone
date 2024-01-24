@@ -12,11 +12,24 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+  import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import { Button } from "../ui/button";
 import { ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
   
 
 
@@ -33,6 +46,9 @@ const ServerHeader:React.FC<ServerHeaderProps> = ({
     role,
 }) => {
 
+
+  const [IsOpen,setIsOpen]= useState(false);
+ const [IsContinue,setIsContinue]= useState(false);
     const { onOpen } = useModal();
 
  const  isAdmin =  role === MemberRole.ADMIN;
@@ -43,15 +59,19 @@ const router = useRouter();
  
  const  onDelete = async (serverId:string) => {
     try {
-       
+
+
+            if(IsContinue){
+                    
       const url = qs.stringifyUrl({
         url: `/api/servers/${serverId}/leave`,
         
       });
     
       const response = await axios.delete(url);
-  
-      router.refresh();
+       router.refresh();
+       return response.data;
+            }
    
     } catch (error) {
       console.log(error);
@@ -91,7 +111,9 @@ const router = useRouter();
      )}
 
 {isModerator && (
- <DropdownMenuItem className="flex justify-between  text-zinc-900 dark:text-zinc-200  hover:text-zinc-200">
+ <DropdownMenuItem 
+ onClick={()=>onOpen("createChannel",{server})}
+ className="flex justify-between  text-zinc-900 dark:text-zinc-200  hover:text-zinc-200">
             Create Channel
             <PlusCircle size={18}/>
          </DropdownMenuItem>
@@ -116,7 +138,7 @@ const router = useRouter();
      )}
     <DropdownMenuSeparator />
     {isAdmin && (
-         <DropdownMenuItem className="flex justify-between text-rose-500  hover:text-rose-500" onClick={()=>{onDelete(server?.id)}}>
+         <DropdownMenuItem className="flex justify-between text-rose-500  hover:text-rose-500" onClick={()=>{onDelete(server?.id) , setIsOpen(true)}}>
             delete Server
             <Trash size={18}/>
          </DropdownMenuItem>
@@ -125,7 +147,23 @@ const router = useRouter();
   </DropdownMenuContent>
 </DropdownMenu>
 
-   
+   <AlertDialog open={IsOpen} onOpenChange={setIsOpen}>
+  <AlertDialogTrigger></AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter className="flex items-center">
+      <AlertDialogCancel onClick={()=>{setIsContinue(false) , setIsOpen(false)}} >Cancel</AlertDialogCancel>
+      <AlertDialogAction onClick={()=>{setIsContinue(true) , setIsOpen(false)}}>Continue</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+
     </> );
 }
  
