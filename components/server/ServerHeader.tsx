@@ -47,36 +47,12 @@ const ServerHeader:React.FC<ServerHeaderProps> = ({
 }) => {
 
 
-  const [IsOpen,setIsOpen]= useState(false);
- const [IsContinue,setIsContinue]= useState(false);
+ 
     const { onOpen } = useModal();
 
     const isAdmin = role === MemberRole.ADMIN;
     const isModerator = isAdmin || role === MemberRole.MODERATOR;
-const router = useRouter();
-
-
  
- const  onDelete = async (serverId:string) => {
-    try {
-
-
-            if(IsContinue){
-                    
-      const url = qs.stringifyUrl({
-        url: `/api/servers/${serverId}/leave`,
-        
-      });
-    
-      const response = await axios.delete(url);
-       router.refresh();
-       return response.data;
-            }
-   
-    } catch (error) {
-      console.log(error);
-    }  
-  }
   
   
   
@@ -133,13 +109,14 @@ const router = useRouter();
           <DropdownMenuSeparator />
         )}
         {isAdmin && (
-          <DropdownMenuItem
-          onClick={() => onOpen("deleteServer")}
-            className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
-          >
-            Delete Server
-            <Trash className="h-4 w-4 ml-auto" />
-          </DropdownMenuItem>
+        <DropdownMenuItem
+        onClick={() => onOpen("deleteServer", { server })}
+        className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
+      >
+        Delete Server
+        <Trash className="h-4 w-4 ml-auto" />
+      </DropdownMenuItem>     
+      
         )}
         {!isAdmin && (
           <DropdownMenuItem
@@ -152,23 +129,7 @@ const router = useRouter();
         )}
       </DropdownMenuContent>
     </DropdownMenu>
-
-   <AlertDialog open={IsOpen} onOpenChange={setIsOpen}>
-  <AlertDialogTrigger></AlertDialogTrigger>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-      <AlertDialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter className="flex items-center">
-      <AlertDialogCancel onClick={()=>{setIsContinue(false) , setIsOpen(false)}} >Cancel</AlertDialogCancel>
-      <AlertDialogAction onClick={()=>{setIsContinue(true) , setIsOpen(false)}}>Continue</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
+ 
 
     </> );
 }

@@ -7,6 +7,7 @@ import EditServerModal from "../modals/edit-server-modal"
 import MangaeMembersModal from "../modals/manage-members-modal"
 import CreateChannelModal from "../modals/create-channel-modal"
 import LeaveServer from "../modals/leave-server"
+import DeleteServer from "../modals/delete-server"
 
 
 
@@ -32,6 +33,7 @@ if(!isMounted){
     <MangaeMembersModal/>
     <CreateChannelModal/>
     <LeaveServer/>
+    <DeleteServer/>
     </>)
 }
 

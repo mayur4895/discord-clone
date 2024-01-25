@@ -23,27 +23,27 @@ import { useModal } from '../../hooks/use-modal-store';
  
 
  
-const LeaveServer = ()=>{
+const DeleteServer = ()=>{
   const {isOpen,onClose,type,data} = useModal();
   const {server} = data;
    
 
   
-  const isModalOpen = isOpen && type==="leaveServer";
+  const isModalOpen = isOpen && type==="deleteServer";
 const {toast} = useToast();
  const router = useRouter();
   
 
  
-   async function onLeave() {
+   async function onDelete() {
       
    try {
      
      const url = qs.stringifyUrl({
-      url:`/api/servers/${server?.id}/leave`,
+      url:`/api/servers/${server?.id}`,
   
      })
-     await axios.patch(url)
+     await axios.delete(url)
      router.refresh();
      onClose();
    
@@ -67,15 +67,15 @@ const {toast} = useToast();
       
       <DialogContent  >
         <DialogHeader>
-          <DialogTitle className="text-2xl">Are you absolutely sure?</DialogTitle>
+          <DialogTitle className="text-2xl">Are you sure to Delete Server?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will Leave  
-             <span className="text-blue-400"> ' {server?.name } ' </span> server and remove your data from this servers.
+            This action cannot be undone. Once you Deleted this
+             <span className="text-blue-400"> ' {server?.name } ' </span> server. permanently deleted
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex items-center">
           <Button onClick={()=>{onClose()}}>Cancel</Button>
-          <Button onClick={onLeave} variant={"outline"}>Confirm</Button>
+          <Button onClick={()=>{onDelete()}} variant={"outline"}>Delete</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -83,4 +83,4 @@ const {toast} = useToast();
 }
 
 
-export default LeaveServer;
+export default DeleteServer;
