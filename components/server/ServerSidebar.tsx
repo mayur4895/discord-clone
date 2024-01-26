@@ -1,12 +1,15 @@
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
-import { ChannelType, MemberRole } from "@prisma/client";
+import { ChannelType, MemberRole, Channel } from '@prisma/client';
 import ServerHeader from "./ServerHeader";
 import { redirect } from "next/navigation";
 import { ScrollArea } from "../ui/scroll-area";
 import ServerSearch from "./ServerSearch";
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
+import { Separator } from "../ui/separator";
+import ServerChannels from "./ServerChannels";
+import ServerSection from "./ServerSection";
 
 
 interface ServerSidebarProps {
@@ -31,17 +34,17 @@ export const ServerSidebar = async ({
  
     
 const iconMap = {
-  [ChannelType.TEXT]: <Hash className="h-4 w-4 mt-2"/>,
-  [ChannelType.AUDIO]: <Mic className="h-4 w-4 mt-2"/>,
-  [ChannelType.VIDEO]: <Video className="h-4 w-4 mt-2"/>
+  [ChannelType.TEXT]: <Hash className="h-4 w-4 "/>,
+  [ChannelType.AUDIO]: <Mic className="h-4 w-4 "/>,
+  [ChannelType.VIDEO]: <Video className="h-4 w-4 "/>
   
 }
 
 
 const roleIconMap = {
   [MemberRole.GUEST]: null,
-  [MemberRole.MODERATOR]: <ShieldCheck className="h-4 w-4 mr-2 text-indigo-500" />,
-  [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />
+  [MemberRole.MODERATOR]: <ShieldCheck className="h-4 w-4  text-indigo-500" />,
+  [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4  text-rose-500" />
 }
 
 
@@ -82,8 +85,8 @@ const roleIconMap = {
           server={server}
           role={role}
          />
-         <ScrollArea className="mx-2">
-          <ServerSearch  data={[
+
+<ServerSearch  data={[
               {
                 label: "Text Channels",
                 type: "channel",
@@ -121,6 +124,101 @@ const roleIconMap = {
                 }))
               },
             ]}/>
+              <Separator className="mt-4"/>
+         <ScrollArea className="mx-2">
+        
+           
+
+        <div>
+        { !!textChannels?.length &&(
+              <ServerSection 
+              sectionType="channels"
+              channelType={ChannelType.TEXT}
+              role={role}
+              label="Text Channels"
+              server={server}
+              />
+            )}
+           {
+            textChannels?.map((channel)=>{
+           return( 
+           <ServerChannels
+            key={channel?.id}
+            role={role}
+            server={server}
+            channel={channel}
+             />)
+            })
+           }
+        </div>
+        
+        <div>
+        { !!audioChannels?.length &&(
+              <ServerSection 
+              sectionType="channels"
+              channelType={ChannelType.TEXT}
+              role={role}
+              label="Voice Channels"
+              server={server}
+              />
+            )}
+           {
+            audioChannels?.map((channel)=>{
+           return( 
+           <ServerChannels
+            key={channel?.id}
+            role={role}
+            server={server}
+            channel={channel}
+             />)
+            })
+           }
+        </div>
+        
+        <div>
+        { !!videoChannels?.length &&(
+              <ServerSection 
+              sectionType="channels"
+              channelType={ChannelType.TEXT}
+              role={role}
+              label="Video Channels"
+              server={server}
+              />
+            )}
+           {
+            videoChannels?.map((channel)=>{
+           return( 
+           <ServerChannels
+            key={channel?.id}
+            role={role}
+            server={server}
+            channel={channel}
+             />)
+            })
+           }
+        </div>
+           <Separator/>
+        <div>
+        { !!members?.length &&(
+              <ServerSection 
+              sectionType="members" 
+              role={role}
+              label="Members"
+              server={server}
+              />
+            )}
+           {/* {
+            members?.map((member)=>{
+           return( 
+           <ServerMember
+            key={member?.id}
+            role={role}
+            server={server}
+            member={member}
+             />)
+            })
+           } */}
+        </div>
          </ScrollArea>
     </div>
     </>);

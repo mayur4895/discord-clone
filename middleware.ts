@@ -10,6 +10,7 @@ export default authMiddleware({
  
 export const config = {
   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  ignoredRoutes: ["/((?!api|trpc))(_next.*|.+\.[\w]+$)", "/servers/65b20143480770f6e717c83f"]
 };
  
  
