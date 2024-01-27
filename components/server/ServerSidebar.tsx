@@ -10,6 +10,7 @@ import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
 import { Separator } from "../ui/separator";
 import ServerChannels from "./ServerChannels";
 import ServerSection from "./ServerSection";
+import ServerMember from "./ServerMember";
 
 
 interface ServerSidebarProps {
@@ -125,11 +126,11 @@ const roleIconMap = {
               },
             ]}/>
               <Separator className="mt-4"/>
-         <ScrollArea className="mx-2">
+         <ScrollArea className="">
         
            
 
-        <div>
+        <div className="px-2">
         { !!textChannels?.length &&(
               <ServerSection 
               sectionType="channels"
@@ -152,11 +153,11 @@ const roleIconMap = {
            }
         </div>
         
-        <div>
+        <div className="px-2">
         { !!audioChannels?.length &&(
               <ServerSection 
               sectionType="channels"
-              channelType={ChannelType.TEXT}
+              channelType={ChannelType.AUDIO}
               role={role}
               label="Voice Channels"
               server={server}
@@ -175,11 +176,11 @@ const roleIconMap = {
            }
         </div>
         
-        <div>
+        <div className="px-2">
         { !!videoChannels?.length &&(
               <ServerSection 
               sectionType="channels"
-              channelType={ChannelType.TEXT}
+              channelType={ChannelType.VIDEO}
               role={role}
               label="Video Channels"
               server={server}
@@ -198,7 +199,7 @@ const roleIconMap = {
            }
         </div>
            <Separator/>
-        <div>
+           <div className="px-2">
         { !!members?.length &&(
               <ServerSection 
               sectionType="members" 
@@ -207,17 +208,16 @@ const roleIconMap = {
               server={server}
               />
             )}
-           {/* {
+           {
             members?.map((member)=>{
            return( 
            <ServerMember
-            key={member?.id}
-            role={role}
+            key={member?.id} 
             server={server}
             member={member}
              />)
             })
-           } */}
+           }
         </div>
          </ScrollArea>
     </div>

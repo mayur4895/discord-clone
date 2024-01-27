@@ -31,7 +31,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react"
-import FileUplod from "../FileUplod"
+ 
 import {  useToast } from "../ui/use-toast"
  import axios from "axios"  
 import {  useParams, useRouter } from "next/navigation"
@@ -51,12 +51,12 @@ const formSchema = z.object({
     type:z.nativeEnum(ChannelType)
 })
 
-const CreateChannelModal = ()=>{
+const EditChannelModal = ()=>{
   const { isOpen, onClose, type, data } = useModal();
  
    const params = useParams();
-  const isModalOpen = isOpen && type==="createChannel";
-  const {channelType} = data;
+  const isModalOpen = isOpen && type==="editChannel";
+  const {channelType ,server,channel} = data;
 const {toast} = useToast();
  const router = useRouter();
  const form = useForm<z.infer<typeof formSchema>>({
@@ -68,14 +68,13 @@ const {toast} = useToast();
   })
 
   useEffect(() => {
-    if (channelType) {
-      console.log(channelType);
-      
-      form.setValue("type", channelType);
-    } else {
-      form.setValue("type", ChannelType.TEXT);
+    if (channel) {
+
+      form.setValue("name", channel?.name);
+  
+      form.setValue("type", channel?.type);
     }
-  }, [channelType, form]);
+  }, [form,channel]);
 
   const isloding = form.formState.isSubmitting;
    async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -83,13 +82,13 @@ const {toast} = useToast();
    try {
      
      const url = qs.stringifyUrl({
-      url:"/api/channels/",
+      url:`/api/channels/${channel?.id}`,
       query:{
-        serverId:params?.serverId
+        serverId:server?.id
       }
 
      })
-     await axios.post(url,values)
+     await axios.patch(url,values)
      form.reset();
      router.refresh();
      onClose();
@@ -114,7 +113,7 @@ const {toast} = useToast();
     <Dialog open={isModalOpen} onOpenChange={handleClose} >
   <DialogContent className=" outline-none">
     <DialogHeader>
-      <DialogTitle className="text-2xl">Create Channel</DialogTitle>
+      <DialogTitle className="text-2xl">Edit Channel</DialogTitle>
     </DialogHeader>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">   
@@ -163,7 +162,7 @@ const {toast} = useToast();
             </FormItem>
           )}
         />
-        <Button type="submit" variant={"primary"}>Submit</Button>
+        <Button type="submit" variant={"primary"}>Save</Button>
       </form>
     </Form>
   </DialogContent>
@@ -174,4 +173,4 @@ const {toast} = useToast();
 }
 
 
-export default CreateChannelModal;
+export default EditChannelModal;
