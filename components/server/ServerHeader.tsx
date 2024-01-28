@@ -64,7 +64,6 @@ const ServerHeader:React.FC<ServerHeaderProps> = ({
         {server.name}
         <ChevronDown size={20}/>
         </DropdownMenuLabel>
-            
   </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]"

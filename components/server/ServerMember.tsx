@@ -5,6 +5,9 @@ import ActionToolTip from "../ActionToolTip"
 import { cn } from "@/lib/utils"
 import { ServerWithMembersWithProfiles } from "@/types"
 import { ShieldAlertIcon, ShieldCheck } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+ 
+import { useParams, useRouter } from "next/navigation"
 
 interface ServerMemberProps{
     member: Member & { profile: Profile };
@@ -12,9 +15,15 @@ interface ServerMemberProps{
 }
 
 const ServerMember = ({server,member}:ServerMemberProps)=>{
+
+const router = useRouter();
+const params = useParams();
+  const onClick = ()=>{
+    router.push(`/servers/${params?.serverId}/conversations/${member?.id}`);
+  }
     return(<>
       <button
-  
+  onClick={onClick}
   className={cn(
     "group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1",
      
@@ -22,9 +31,14 @@ const ServerMember = ({server,member}:ServerMemberProps)=>{
 >
  
   <p className={cn(
-    "line-clamp-1 font-semibold text-sm text-zinc-500 group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300 transition",
+    "line-clamp-1 font-semibold text-sm flex items-center gap-2 text-zinc-500 group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300 transition",
      
   )}>
+   <Avatar className="h-8 w-8">
+  <AvatarImage src={member.profile.imageUrl} />
+  <AvatarFallback>?</AvatarFallback>
+</Avatar>
+
     {member.profile.name}
   </p>
           
