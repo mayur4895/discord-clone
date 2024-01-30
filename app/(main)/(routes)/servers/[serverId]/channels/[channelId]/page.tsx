@@ -40,7 +40,12 @@ const ChannelIdPAge = async({params}:ChannelIdPageProps) => {
       }
     
      return ( <> 
-      <ChatHeader/>
+      <ChatHeader
+      name={channel.name}
+      serverId={channel.serverId}
+      type="channel"
+      
+      />
      </> );
 }
  
