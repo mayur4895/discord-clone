@@ -28,7 +28,7 @@ const ChatHeader = ({
             )}
             {name}
             </h1>
-       </div>
+       </div>js
     </>);
 }
  
