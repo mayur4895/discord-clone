@@ -1,7 +1,9 @@
-import { ChannelType } from "@prisma/client";
+ 
 import { Hash, MenuIcon, Mic, Video, icons } from "lucide-react";
 import MobileToggle from "../MobileToggel";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+ 
+import { SocketIndicator } from "../socket-indicator";
 
 
 interface ChatHeaderProps{
@@ -38,6 +40,8 @@ const ChatHeader = ({
       )}
             {name}
             </h1>
+            <SocketIndicator/>
+
        </div>
     </>);
 }
