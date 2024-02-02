@@ -9,6 +9,7 @@ import {
   } from "@/components/ui/sheet"
 import ServerSidebar from "./server/ServerSidebar";
 import NavigationSidebar from "./navigations/NavigationSidebar";
+import { Button } from "./ui/button";
   
 interface MobileToggle{
     serverId:string
@@ -17,8 +18,11 @@ interface MobileToggle{
 const MobileToggle = ({serverId}:MobileToggle) => {
     return (  <>
     <Sheet>
-  <SheetTrigger>
-  <MenuIcon className=" cursor-pointer"/>
+  <SheetTrigger> 
+ 
+          <MenuIcon  className=" cursor-pointer md:hidden"/>
+  
+ 
   </SheetTrigger>
   <SheetContent side={"left"} className="p-0 gap-0 flex">
 <div className="w-[72px]">

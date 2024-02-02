@@ -18,9 +18,15 @@ const ServerMember = ({server,member}:ServerMemberProps)=>{
 
 const router = useRouter();
 const params = useParams();
-  const onClick = ()=>{
-    router.push(`/servers/${params?.serverId}/conversations/${member?.id}`);
-  }
+  
+  
+
+
+const onClick = (e:React.MouseEvent)=>{
+  e.stopPropagation();
+  router.push(`/servers/${params?.serverId}/conversations/${member.id}`)
+}
+
     return(<>
       <button
   onClick={onClick}
