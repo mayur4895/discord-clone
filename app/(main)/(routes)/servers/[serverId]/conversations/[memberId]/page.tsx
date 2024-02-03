@@ -56,6 +56,7 @@ const otherMember = memberOne.profileId == profile.id ? memberTwo : memberOne;
   imageUrl={otherMember.profile.imageUrl}
 
   />
+
  </>);
 } 
  
