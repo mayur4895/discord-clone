@@ -101,7 +101,7 @@ id String    @id @default(auto()) @map("_id") @db.ObjectId
  
 model Message {
 id String    @id @default(auto()) @map("_id") @db.ObjectId
-  content String @db.ObjectId
+  content String 
 
   fileUrl String? @db.ObjectId
 

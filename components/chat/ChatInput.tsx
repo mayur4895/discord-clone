@@ -3,7 +3,7 @@
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
- 
+ import qs from "query-string"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Hash, Plus, PlusIcon, Smile } from "lucide-react"
 import { BsEmojiDizzyFill } from "react-icons/bs"
+import axios from "axios"
 
 const formSchema = z.object({
   content: z.string().min(1),
@@ -43,11 +44,17 @@ const ChatInput = ({type,name,apiUrl,query}:channelIdProps) => {
       })
      
      
-      function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+     async function onSubmit(values: z.infer<typeof formSchema>) {
+
+            const url = qs.stringifyUrl({
+              url:"/api/socket/messages",
+              query:query
+            })
+            await axios.post(url,values);
+
       }
  
-
+const isloding = form.formState.isSubmitting;
     return ( <>
   
     <div className="mt-auto ">
@@ -68,7 +75,7 @@ const ChatInput = ({type,name,apiUrl,query}:channelIdProps) => {
                      <Plus className="text-white dark:text-[#313338]" />
                      </Button>
                
-                <Input placeholder={ `Message ${type =="conversation" ? name : "#"+name}`} {...field}  className="px-12"/>
+                <Input disabled={isloding} placeholder={ `Message ${type =="conversation" ? name : "#"+name}`} {...field}  className="px-12"/>
                 <div className="absolute top-8 right-8 cursor-pointer">
                 <Smile
           className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition"

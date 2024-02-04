@@ -43,7 +43,7 @@ const ChannelIdPAge = async({params}:ChannelIdPageProps) => {
       }
     
      return ( <> 
-     <div className="flex flex-col h-full">
+     <div className="flex flex-col   h-[100vh] ">
 
   
       <ChatHeader
