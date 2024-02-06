@@ -38,6 +38,7 @@ const FileUplod = ({
         )
     }
     return(<> 
+    <div className="border-dashed border-foreground/25 border">  
  <UploadDropzone
 
  endpoint={endpoint}
@@ -48,6 +49,7 @@ const FileUplod = ({
     console.log(`ERROR! ${error.message}`);
   }}
  />
+ </div>
     </>)
 }
 

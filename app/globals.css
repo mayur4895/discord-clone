@@ -70,12 +70,17 @@ body,
     --ring: 240 4.9% 83.9%;
   }
 }
- 
+.border-gray-900\/25{
+  border-color: gray;
+}
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+  } 
+  .border-gray-900\/25{
+    border-color: gray!important;
   }
 }

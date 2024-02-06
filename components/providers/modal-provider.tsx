@@ -10,6 +10,7 @@ import LeaveServer from "../modals/leave-server"
 import DeleteServer from "../modals/delete-server"
 import DeleteChannel from "../modals/delete-channel"
 import EditChannelModal from "../modals/edit-channel-modal"
+import MessageFileModal from "../modals/upload-messagefile-modal"
 
 
 
@@ -38,6 +39,7 @@ if(!isMounted){
     <DeleteServer/>
     <DeleteChannel/>
     <EditChannelModal/>
+    <MessageFileModal/>
     </>)
 }
 

@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input"
 import { Hash, Plus, PlusIcon, Smile } from "lucide-react"
 import { BsEmojiDizzyFill } from "react-icons/bs"
 import axios from "axios"
+import { useModal } from "@/hooks/use-modal-store"
 
 const formSchema = z.object({
   content: z.string().min(1),
@@ -42,12 +43,12 @@ const ChatInput = ({type,name,apiUrl,query}:channelIdProps) => {
           content: "",
         },
       })
-     
+  const {onOpen} = useModal();
      
      async function onSubmit(values: z.infer<typeof formSchema>) {
 
             const url = qs.stringifyUrl({
-              url:"/api/socket/messages",
+              url:apiUrl,
               query:query
             })
             await axios.post(url,values);
@@ -56,10 +57,10 @@ const ChatInput = ({type,name,apiUrl,query}:channelIdProps) => {
  
 const isloding = form.formState.isSubmitting;
     return ( <>
-  
+        
     <div className="mt-auto ">
-
-   
+         
+           
      <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8  ">
         <FormField
@@ -71,7 +72,9 @@ const isloding = form.formState.isSubmitting;
               <FormControl>
                 
                 <div className="relative p-6 pb-6">
-                     <Button   className="absolute top-8 left-8 h-[24px] w-[24px] bg-zinc-500 dark:bg-zinc-600 hover:bg-zinc-600 dark:hover:bg-zinc-500 transition rounded-full p-1 flex items-center justify-center">
+                     <Button  
+                     onClick={()=>onOpen("messageFile",{apiUrl,query})}
+                     className="absolute top-8 left-8 h-[24px] w-[24px] bg-zinc-500 dark:bg-zinc-600 hover:bg-zinc-600 dark:hover:bg-zinc-500 transition rounded-full p-1 flex items-center justify-center">
                      <Plus className="text-white dark:text-[#313338]" />
                      </Button>
                
