@@ -1,9 +1,9 @@
 'use client'
 import { UploadDropzone } from "@/lib/uplodthing";
 import "@uploadthing/react/styles.css"
-import { X } from "lucide-react";
+import { File, X } from "lucide-react";
 import Image from "next/image";
-
+import { FcFile } from "react-icons/fc";
 interface FileUplodProps{
     onChange:(url?:string) =>void;
 endpoint: "messageFile" | "serverImage";
@@ -34,6 +34,23 @@ const FileUplod = ({
  alt=""
  />
  <button type="button" onClick={()=>{onChange("")}} className=" absolute top-0 right-0 bg-rose-500 text-white p-1 rounded-full"> <X size={14}/></button>
+            </div>
+        )
+    }
+
+
+    if(value && fileType == "pdf"){
+        return(
+           
+  <div className=" h-25 w-25 relative  items-center  p-2 mt-2 rounded-md bg-zinc-600/10  ">
+ <FcFile  size={50}/>
+<a  className=" truncate"   href={value}
+          target="_blank"
+          rel="noopener noreferrer">
+ <p className=" truncate  w-80">{value}</p>
+</a>
+ 
+ <button type="button" onClick={()=>{onChange("")}} className=" absolute -top-2 -right-2 bg-rose-500 text-white p-1 rounded-full"> <X size={14}/></button>
             </div>
         )
     }

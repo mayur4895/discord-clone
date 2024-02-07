@@ -103,7 +103,7 @@ model Message {
 id String    @id @default(auto()) @map("_id") @db.ObjectId
   content String 
 
-  fileUrl String? @db.ObjectId
+  fileUrl String? 
 
   memberId String  @db.ObjectId
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)

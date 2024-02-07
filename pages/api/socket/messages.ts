@@ -5,14 +5,11 @@ import { NextApiResponseServerIo } from "@/types";
 import { db } from "@/lib/db";
 import { currentProfilePages } from "@/lib/curent-profile-pages";
 
-export default async function handler(
+export default async function POST(
   req: NextApiRequest,
   res: NextApiResponseServerIo,
 ) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
+  
   try {
     const profile = await currentProfilePages(req);
     const { content, fileUrl } = req.body;
@@ -58,37 +55,38 @@ export default async function handler(
         serverId: serverId as string,
       }
     });
-   
-    if(!channel){
-        return res.status(404).json({ message: "Channel not found" }); 
+
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found" });
     }
 
- const member = server.members.find(member => member.profileId == profile.id);
- if(!member){
-    return res.status(404).json({ message: "member not found" }); 
-}
+    const member = server.members.find((member) => member.profileId === profile.id);
 
-const message = await db.message.create({
-    data:{
+    if (!member) {
+      return res.status(404).json({ message: "Member not found" });
+    }
+
+    const message = await db.message.create({
+      data: {
         content,
         fileUrl,
-        channelId:channelId as string,
-        memberId:member.id,
-    },
-    include:{
-        member:{
-            include:{
-                profile:true
-            }
+        channelId: channelId as string,
+        memberId: member.id,
+      },
+      include: {
+        member: {
+          include: {
+            profile: true,
+          }
         }
-    }
-})
- 
-const channelKey = `chat:${channelId}:message`;
+      }
+    });
 
+    const channelKey = `chat:${channelId}:messages`;
 
-res.socket.server.io?.emit(channelKey,message);
-return res.status(200).json(message);
+    res?.socket?.server?.io?.emit(channelKey, message);
+
+    return res.status(200).json(message);
   } catch (error) {
     console.log("[MESSAGES_POST]", error);
     return res.status(500).json({ message: "Internal Error" }); 

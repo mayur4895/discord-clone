@@ -19,6 +19,9 @@ import { Hash, Plus, PlusIcon, Smile } from "lucide-react"
 import { BsEmojiDizzyFill } from "react-icons/bs"
 import axios from "axios"
 import { useModal } from "@/hooks/use-modal-store"
+import { useRouter } from "next/navigation"
+import { EmojiPicker } from "../emoji-picker"
+ 
 
 const formSchema = z.object({
   content: z.string().min(1),
@@ -36,7 +39,7 @@ interface channelIdProps{
 
 const ChatInput = ({type,name,apiUrl,query}:channelIdProps) => {
 
-
+ const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -52,6 +55,9 @@ const ChatInput = ({type,name,apiUrl,query}:channelIdProps) => {
               query:query
             })
             await axios.post(url,values);
+
+            form.reset();
+            router.refresh();
 
       }
  
@@ -80,9 +86,9 @@ const isloding = form.formState.isSubmitting;
                
                 <Input disabled={isloding} placeholder={ `Message ${type =="conversation" ? name : "#"+name}`} {...field}  className="px-12"/>
                 <div className="absolute top-8 right-8 cursor-pointer">
-                <Smile
-          className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
-        />
+                <EmojiPicker
+                onChange={(emoji:string)=> field.onChange(`${field.value} ${emoji}`)}
+                />
                   </div>
                 </div>
               </FormControl> 

@@ -59,30 +59,26 @@ const {toast} = useToast();
   const { apiUrl ,query} = data;
 
   const isloding = form.formState.isSubmitting;
-   async function onSubmit(values: z.infer<typeof formSchema>) {
-      
-   try {
-    const url = qs.stringifyUrl({
-      url:apiUrl || "",
-      query
-    })
-     await axios.post(url,
-      {...values,
-      content: values.fileUrl,}
-      )
-     form.reset();
-     router.refresh();
-     handleClose();
-   } catch (error) {
-     toast({
-      variant:"destructive",
-      title:"Something went wrong"
    
-     })
-   }
-  }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const url = qs.stringifyUrl({
+        url: apiUrl || "",
+        query,
+      });
 
- 
+      await axios.post(url, {
+        ...values,
+        content: values.fileUrl,
+      });
+
+      form.reset();
+      router.refresh();
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  }
  
     return(<>
     <Dialog open={isModalOpen}  onOpenChange={handleClose} >
