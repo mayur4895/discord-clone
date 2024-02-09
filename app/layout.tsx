@@ -6,6 +6,8 @@ import { ThemeProvider } from '@/components/providers/theme-provider'
 import { cn } from '@/lib/utils'
 import ModalProvider from '@/components/providers/modal-provider'
 import { SocketProvider } from '@/components/providers/socket-provider'
+import { QueryClientProvider } from '@tanstack/react-query';
+import QueryProvider from '@/components/providers/react-query-provider'
 
 const font = Poppins({ weight: ['200', '300', '400', '500', '600', '700', '800', '900'], subsets: ['latin'] })
 
@@ -37,8 +39,9 @@ export default function RootLayout({
 
             <SocketProvider>
               <ModalProvider />
-
-              {children}
+              <QueryProvider>
+                {children}
+              </QueryProvider>
             </SocketProvider>
           </ThemeProvider>
 

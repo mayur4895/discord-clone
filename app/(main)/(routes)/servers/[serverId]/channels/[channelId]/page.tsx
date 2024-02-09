@@ -6,6 +6,8 @@ import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import ChatWelcome from "@/components/chat/ChatWelcome";
+import ChatMessages from "@/components/chat/ChatMessages";
 
 interface ChannelIdPageProps{
     params:{
@@ -51,8 +53,23 @@ const ChannelIdPAge = async({params}:ChannelIdPageProps) => {
       type="channel"
       />
 
-      <div className=" p-6 pb-6">Future Message...</div>
-     
+       <ChatWelcome 
+       name={channel.name}
+       type="channel"
+       />
+       <ChatMessages
+       chatId={channel.id}
+       name={channel.name}
+       member={member}
+       paramKey="channelId"
+       paramValue={channel.id}
+       apiUrl="/api/messages"
+       socketUrl="/api/socket/messages"
+       socketQuery={{
+        channelId:channel.id,
+        serverId:channel.serverId
+       }}
+       />
        
       <ChatInput
          type="channel"
