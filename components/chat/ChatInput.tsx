@@ -1,106 +1,102 @@
-"use client"
+"use client";
 
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
- import qs from "query-string"
-import { Button } from "@/components/ui/button"
+import * as z from "zod";
+import axios from "axios";
+import qs from "query-string";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Hash, Plus, PlusIcon, Smile } from "lucide-react"
-import { BsEmojiDizzyFill } from "react-icons/bs"
-import axios from "axios"
-import { useModal } from "@/hooks/use-modal-store"
-import { useRouter } from "next/navigation"
-import { EmojiPicker } from "../emoji-picker"
- 
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useModal } from "@/hooks/use-modal-store";
+import { EmojiPicker } from "@/components/emoji-picker";
+
+interface ChatInputProps {
+  apiUrl: string;
+  query: Record<string, any>;
+  name: string;
+  type: "conversation" | "channel";
+}
 
 const formSchema = z.object({
   content: z.string().min(1),
-})
+});
 
+export const ChatInput = ({
+  apiUrl,
+  query,
+  name,
+  type,
+}: ChatInputProps) => {
+  const { onOpen } = useModal();
+  const router = useRouter();
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      content: "",
+    }
+  });
 
-interface channelIdProps{
-    type:"channel" | "conversation"
-    name:string
-    apiUrl:string
-    query:Record<string,any>
-}
+  const isLoading = form.formState.isSubmitting;
 
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const url = qs.stringifyUrl({
+        url: apiUrl,
+        query,
+      });
 
-const ChatInput = ({type,name,apiUrl,query}:channelIdProps) => {
+      await axios.post(url, values);
 
- const router = useRouter();
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-          content: "",
-        },
-      })
-  const {onOpen} = useModal();
-     
-     async function onSubmit(values: z.infer<typeof formSchema>) {
+      form.reset();
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-            const url = qs.stringifyUrl({
-              url:apiUrl,
-              query:query
-            })
-            await axios.post(url,values);
-
-            form.reset();
-            router.refresh();
-
-      }
- 
-const isloding = form.formState.isSubmitting;
-    return ( <>
-        
-    <div className="mt-auto ">
-         
-           
-     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8  ">
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}  >
         <FormField
           control={form.control}
           name="content"
           render={({ field }) => (
             <FormItem>
-        
               <FormControl>
-                
-                <div className="relative p-6 pb-6">
-                     <Button  
-                     onClick={()=>onOpen("messageFile",{apiUrl,query})}
-                     className="absolute top-8 left-8 h-[24px] w-[24px] bg-zinc-500 dark:bg-zinc-600 hover:bg-zinc-600 dark:hover:bg-zinc-500 transition rounded-full p-1 flex items-center justify-center">
-                     <Plus className="text-white dark:text-[#313338]" />
-                     </Button>
-               
-                <Input disabled={isloding} placeholder={ `Message ${type =="conversation" ? name : "#"+name}`} {...field}  className="px-12"/>
-                <div className="absolute top-8 right-8 cursor-pointer">
-                <EmojiPicker
-                onChange={(emoji:string)=> field.onChange(`${field.value} ${emoji}`)}
-                />
+                <div className="relative p-4 pb-6">
+                  <button
+                    type="button"
+                    onClick={() => onOpen("messageFile", { apiUrl, query })}
+                    className="absolute top-7 left-8 h-[24px] w-[24px] bg-zinc-500 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
+                  >
+                    <Plus className="text-white dark:text-[#313338]" />
+                  </button>
+                  <Input
+                    disabled={isLoading}
+                    className="px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
+                    placeholder={`Message ${type === "conversation" ? name : "#" + name}`}
+                    {...field}
+                  />
+                  <div className="absolute top-7 right-8">
+                    <EmojiPicker
+                      onChange={(emoji: string) => field.onChange(`${field.value} ${emoji}`)}
+                    />
                   </div>
                 </div>
-              </FormControl> 
+              </FormControl>
             </FormItem>
           )}
         />
-        
       </form>
     </Form>
-
-    </div>
-    </>);
+  )
 }
- 
-export default ChatInput;
