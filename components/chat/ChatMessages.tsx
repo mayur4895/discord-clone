@@ -3,10 +3,11 @@
 import { useChatQuery } from "@/hooks/use-chat-query";
 import { Member, Message, Channel, Profile } from '@prisma/client';
 import ChatWelcome from "./ChatWelcome";
-import { LuServerCrash } from "react-icons/lu";
+ import {format} from "date-fns"
 import { TbLoader2 } from "react-icons/tb";
 import Image from "next/image";
 import { Fragment } from "react";
+import ChatItem from "./ChatItem";
 interface ChatMessagesProps{
     name:string
     member:Member
@@ -19,6 +20,8 @@ interface ChatMessagesProps{
     type:"channel" | "converation"
           
 }
+
+const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 type MessageWithMemberWithProfile = Message &{
     member:Member & {
@@ -91,11 +94,25 @@ const queryKey = `chat:${chatId}`;
                 <Fragment key={i}>
                       {
                         group.items.map((message:MessageWithMemberWithProfile)=>{
-                            return(<>
-                           <div>
-                           {message.content}
-                           </div>
-                            </>)
+                            return(
+                     
+                               <ChatItem
+                                key={message.id}
+                                id={message.id}
+                               content={message.content}
+                               apiUrl={apiUrl}  
+                               currentMember={member}
+                               socketQuery={socketQuery}
+                               socketUrl={socketUrl}
+                               timeStamp={format(new Date(message.createdAt) , DATE_FORMAT)}
+                               isupdated={message.updatedAt !== message.createdAt}
+                               deleted={message.deleted}
+                               fileUrl={message.fileUrl}
+                               member={message.member}
+                                
+                               />
+                          
+                            )
                         })
                       }
                 </Fragment>
